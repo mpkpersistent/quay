@@ -6,9 +6,11 @@ on:
     branches:
     - "!dependabot/*"
     - "*"
+    - "UT_April"
   pull_request:
     branches:
     - "*"
+    - "UT_April"
 jobs:
   build:
     name: Format
