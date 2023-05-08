@@ -10,13 +10,21 @@ on:
     branches:
     - "*"
 jobs:
+  config:
+    runs-on: ubuntu-latest
+    outputs:
+      go_versions: ${{ steps.config.outputs.go_versions }}
+    steps:
+      - id: config
+        run: |
+          echo 'go_versions=["1.20"]' >> "$GITHUB_OUTPUT"
   build:
     name: Format
     runs-on: ubuntu-20.04
     steps:
 
     - uses: actions/checkout@v2
-
+    
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
@@ -48,8 +56,12 @@ jobs:
   unit:
     name: Unit Test
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        go: ${{ fromJSON(needs.config.outputs.go_versions) }}
+        # Put non-amd64 platforms that should run tests here:
+        platform: ['linux/arm64', 'linux/ppc64le']
     steps:
-
     - uses: actions/checkout@v2
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
