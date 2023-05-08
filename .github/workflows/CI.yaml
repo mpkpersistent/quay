@@ -65,9 +65,6 @@ jobs:
     container: quay.io/projectquay/golang:${{ matrix.go }}
     steps:
     - uses: actions/checkout@v2
-    - uses: ./.github/actions/go-cache
-      with:
-          go: ${{ matrix.go }}
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
       with:
