@@ -55,14 +55,23 @@ jobs:
 
   unit:
     name: Unit Test
+    needs: ['config']
     runs-on: ubuntu-20.04
     strategy:
       matrix:
         go: ${{ fromJSON(needs.config.outputs.go_versions) }}
         # Put non-amd64 platforms that should run tests here:
         platform: ['linux/arm64', 'linux/ppc64le']
+    container: quay.io/projectquay/golang:${{ matrix.go }}
     steps:
     - uses: actions/checkout@v2
+    - uses: ./.github/actions/go-cache
+        with:
+          go: ${{ matrix.go }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: ${{ matrix.platform }}
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
