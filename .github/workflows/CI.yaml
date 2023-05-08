@@ -62,7 +62,6 @@ jobs:
         go: ${{ fromJSON(needs.config.outputs.go_versions) }}
         # Put non-amd64 platforms that should run tests here:
         platform: ['linux/arm64', 'linux/ppc64le']
-    container: quay.io/projectquay/golang:${{ matrix.go }}
     steps:
     - uses: actions/checkout@v2
     - name: Set up QEMU
