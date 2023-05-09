@@ -6,9 +6,11 @@ on:
     branches:
     - "!dependabot/*"
     - "*"
+    - "mpkpersistent-patch-1"
   pull_request:
     branches:
     - "*"
+    - "mpkpersistent-patch-1"
 jobs:
   config:
     runs-on: ubuntu-latest
@@ -129,10 +131,20 @@ jobs:
 
   e2e:
     name: E2E Tests
+    needs: ['config']
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        go: ${{ fromJSON(needs.config.outputs.go_versions) }}
+        # Put non-amd64 platforms that should run tests here:
+        platform: ['linux/arm64', 'linux/ppc64le']
     steps:
 
     - uses: actions/checkout@v2
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+      with:
+          platforms: ${{ matrix.platform }}
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
