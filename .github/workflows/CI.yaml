@@ -86,11 +86,15 @@ jobs:
 
   types:
     name: Types Test
+    needs: ['config']
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        go: ${{ fromJSON(needs.config.outputs.go_versions) }}
+        # Put non-amd64 platforms that should run tests here:
+        platform: ['linux/arm64', 'linux/ppc64le']
     steps:
-
     - uses: actions/checkout@v2
-
     - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
