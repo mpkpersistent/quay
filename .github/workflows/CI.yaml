@@ -76,7 +76,11 @@ jobs:
           --platform ${{ matrix.platform }}
           --privileged
           tonistiigi/binfmt -install ${{ matrix.platform }}
-          uname -a
+          uname -m
+          sudo apt-get update
+          sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+          cat requirements-dev.txt | grep tox | xargs pip install
+          tox -e py39-unit
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
@@ -162,7 +166,11 @@ jobs:
           --platform ${{ matrix.platform }}
           --privileged
           tonistiigi/binfmt -install ${{ matrix.platform }}
-          uname -a
+          uname -m
+          sudo apt-get update
+          sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+          python -m pip install --upgrade pip
+          cat requirements-dev.txt | grep tox | xargs pip install
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
