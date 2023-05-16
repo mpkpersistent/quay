@@ -64,8 +64,22 @@ jobs:
         go: ${{ fromJSON(needs.config.outputs.go_versions) }}
         # Put non-amd64 platforms that should run tests here:
         platform: ['linux/arm64', 'linux/ppc64le']
+        arch: ['arm64','ppc64le']
     steps:
     - uses: actions/checkout@v2
+    - uses: uraimo/run-on-arch-action@v2
+      name: Run commands
+      id: runcmd
+      with:
+          arch: ${{ matrix.arch }}
+          run: |
+            uname -a
+            echo ::set-output name=uname::$(uname -a)
+
+    - name: Get the output
+        # Echo the `uname` output parameter from the `runcmd` step
+      run: |
+          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
       with:
