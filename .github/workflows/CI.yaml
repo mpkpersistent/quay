@@ -76,6 +76,7 @@ jobs:
           --platform ${{ matrix.platform }}
           --privileged
           tonistiigi/binfmt -install ${{ matrix.platform }}
+          ls /proc/sys/fs/binfmt_misc
           uname -m
           sudo apt-get update
           sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
