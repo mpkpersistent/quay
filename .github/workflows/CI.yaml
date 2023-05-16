@@ -153,6 +153,10 @@ jobs:
       uses: docker/setup-qemu-action@v2
       with:
           platforms: ${{ matrix.platform }}
+    - run: >-
+          docker run
+          --rm
+          --platform ${{ matrix.platform }}
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
