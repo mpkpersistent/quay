@@ -74,10 +74,10 @@ jobs:
           docker run
           --rm
           --platform ${{ matrix.platform }}
-          --mount "type=bind,src=$(go env GOMODCACHE),dst=/go/pkg/mod"
-          --mount "type=bind,src=$(pwd),dst=/build"
-          -w /build
-          lscpu
+          --privileged
+          tonistiigi/binfmt --install
+    - run: >-
+          uname -a
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
@@ -161,10 +161,8 @@ jobs:
           docker run
           --rm
           --platform ${{ matrix.platform }}
-          --mount "type=bind,src=$(go env GOMODCACHE),dst=/go/pkg/mod"
-          --mount "type=bind,src=$(pwd),dst=/build"
-          -w /build
-          lscpu
+          --privileged
+          tonistiigi/binfmt --install
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
