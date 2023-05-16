@@ -75,7 +75,7 @@ jobs:
           --rm
           --platform ${{ matrix.platform }}
           --privileged
-          tonistiigi/binfmt -install
+          tonistiigi/binfmt -install ${{ matrix.platform }}
     - run: >-
           uname -a
     - name: Set up Python 3.9
@@ -162,7 +162,7 @@ jobs:
           --rm
           --platform ${{ matrix.platform }}
           --privileged
-          tonistiigi/binfmt -install
+          tonistiigi/binfmt -install ${{ matrix.platform }}
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
