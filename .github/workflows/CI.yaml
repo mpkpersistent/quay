@@ -65,6 +65,7 @@ jobs:
         # Put non-amd64 platforms that should run tests here:
         platform: ['linux/arm64', 'linux/ppc64le']
         arch: ['arm64','ppc64le']
+        distro: ['ubuntu20.04','ubuntu20.04']
     steps:
     - uses: actions/checkout@v2
     - uses: uraimo/run-on-arch-action@v2
