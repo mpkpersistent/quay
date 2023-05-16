@@ -75,7 +75,7 @@ jobs:
           --rm
           --platform ${{ matrix.platform }}
           --privileged
-          sudo apt-get update
+          apt-get update
           sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
@@ -84,9 +84,9 @@ jobs:
         architecture: x64
     - name: Install dependencies
       run: |
-        uname -m
-        sudo apt-get update
-        sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+        uname -m &&
+        sudo apt-get update  && 
+        apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig &&
         cat requirements-dev.txt | grep tox | xargs pip install
 
     - name: tox
