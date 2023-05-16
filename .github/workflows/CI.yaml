@@ -71,12 +71,7 @@ jobs:
       with:
           platforms: ${{ matrix.platform }}
     - run: >-
-          docker run
-          --rm
-          --platform ${{ matrix.platform }}
-          --privileged
-          apt-get update
-          sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+          uname -m
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
@@ -84,11 +79,9 @@ jobs:
         architecture: x64
     - name: Install dependencies
       run: |
-        uname -m &&
-        sudo apt-get update  && 
-        apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig &&
+        sudo apt-get update
+        sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
         cat requirements-dev.txt | grep tox | xargs pip install
-
     - name: tox
       run: tox -e py39-unit
 
@@ -158,12 +151,7 @@ jobs:
       with:
           platforms: ${{ matrix.platform }}
     - run: >-
-          docker run
-          --rm
-          --platform ${{ matrix.platform }}
-          --privileged
-          sudo apt-get update
-          sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+          uname -m
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
@@ -175,7 +163,6 @@ jobs:
         sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
         python -m pip install --upgrade pip
         cat requirements-dev.txt | grep tox | xargs pip install
-
     - name: tox
       run: tox -e py39-e2e
 
