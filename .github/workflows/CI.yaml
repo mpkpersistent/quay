@@ -37,8 +37,8 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         platforms: linux/ppc64le
-     
-    
+    - run: >-
+        uname -a
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
