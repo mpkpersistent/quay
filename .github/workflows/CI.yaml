@@ -5,6 +5,7 @@ on:
   push:
     branches:
     - "!dependabot/*"
+    - "test_dockercontainer"
     - "*"
   pull_request:
     branches:
