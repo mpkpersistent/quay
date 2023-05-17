@@ -27,7 +27,7 @@ jobs:
            docker run
            --rm
            --platform ${{ matrix.platform }}
-           bash apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+           bash sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
