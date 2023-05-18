@@ -80,11 +80,11 @@ jobs:
               echo "amd64"
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               echo "inside ppc64le"
-              apt-get update
-              apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
-              cat requirements-dev.txt | grep tox | xargs pip install
-              tox -e py39-unit
               uname -m
+              apt-get update
+              #apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+              #cat requirements-dev.txt | grep tox | xargs pip install
+              tox -e py39-unit
             fi
 #      uses: docker/setup-qemu-action@v2
 #      with:
