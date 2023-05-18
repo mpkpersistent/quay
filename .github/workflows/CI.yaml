@@ -85,7 +85,7 @@ jobs:
               apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
               cat requirements-dev.txt | grep tox | xargs pip install
               #tox -e py39-unit
-              tox -e python3.9-unit
+              tox -e python3.8-unit
             fi
 #      uses: docker/setup-qemu-action@v2
 #      with:
