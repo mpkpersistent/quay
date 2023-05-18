@@ -70,7 +70,11 @@ jobs:
       uses: docker/setup-qemu-action@v2
       with:
           platforms: ${{ matrix.platform }}
-    - run: uname -m
+    - run: 
+         docker run
+          --rm
+          --platform ${{ matrix.platform }}
+          tox -e py39-unit
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
