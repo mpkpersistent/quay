@@ -1,7 +1,23 @@
 name: mk_action
 on: [push, pull_request]
-
+  push:
+    branches:
+    - "!dependabot/*"
+    - "*"
+    - "mpkpersistent-patch-1"
+  pull_request:
+    branches:
+    - "*"
+    - "mpkpersistent-patch-1"
 jobs:
+   config:
+    runs-on: ubuntu-latest
+    outputs:
+      go_versions: ${{ steps.config.outputs.go_versions }}
+    steps:
+      - id: config
+        run: |
+          echo 'go_versions=["1.20"]' >> "$GITHUB_OUTPUT"
   ppc64le_job:
     # The host should always be Linux
     runs-on: ubuntu18.04
