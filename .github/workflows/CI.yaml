@@ -80,8 +80,8 @@ jobs:
               echo "amd64"
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               echo "inside ppc64le"
-              sudo apt-get update
-              sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+              apt-get update
+              pt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
               cat requirements-dev.txt | grep tox | xargs pip install
               tox -e py39-unit
               uname -m
