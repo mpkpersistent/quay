@@ -10,19 +10,11 @@ on:
     - "*"
     - "mpkpersistent-patch-1"
 jobs:
-   config:
-    runs-on: ubuntu-latest
-    outputs:
-      go_versions: ${{ steps.config.outputs.go_versions }}
-    steps:
-      - id: config
-        run: |
-          echo 'go_versions=["1.20"]' >> "$GITHUB_OUTPUT"
-  ppc64le_job:
-    # The host should always be Linux
-    runs-on: ubuntu18.04
-    name: Build on ubuntu-22.04 ppc64le
-    steps:
+    ppc64le_job:
+      # The host should always be Linux
+      runs-on: ubuntu18.04
+      name: Build on ubuntu-22.04 ppc64le
+      steps:
       - uses: actions/checkout@v3
       - uses: uraimo/run-on-arch-action@v2
         name: Run commands
