@@ -71,10 +71,13 @@ jobs:
       with:
           platforms: ${{ matrix.platform }}
     - run: 
-         docker run
-          --rm
-          --platform ${{ matrix.platform }}
-          tox -e py39-unit
+        echo "${{ secrets.QUAY_TOKEN }}" | docker login -u "${{ secrets.QUAY_USER }}" --password-stdin quay.io
+        docker buildx create --use
+        docker run --rm quay.io/${{ secrets.QUAY_USER }} tox -e py39-unit
+#         docker run
+#          --rm
+#          --platform ${{ matrix.platform }}
+#          tox -e py39-unit
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
