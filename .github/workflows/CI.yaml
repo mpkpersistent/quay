@@ -64,6 +64,7 @@ jobs:
         go: ${{ fromJSON(needs.config.outputs.go_versions) }}
         # Put non-amd64 platforms that should run tests here:
         platform: ['linux/arm64', 'linux/ppc64le']
+        os: [ubuntu20.04]
         architecture: [ ppc64le ]
       fail-fast: false
       max-parallel: 2    
@@ -72,12 +73,13 @@ jobs:
     - name: Set up QEMU
       uses: uraimo/run-on-arch-action@v2
       with:
-          distro: ubuntu20.04
+          distro: ${{ matrix.os }}
           arch: ${{ matrix.architecture }}
           run: |
             if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
               echo "amd64"
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
+              echo "inside ppc64le"
               sudo apt-get update
               sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
               cat requirements-dev.txt | grep tox | xargs pip install
