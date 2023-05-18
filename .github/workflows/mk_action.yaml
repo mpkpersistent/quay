@@ -1,5 +1,5 @@
 name: mk_action
-on: [push, pull_request]
+on:
   push:
     branches:
     - "!dependabot/*"
