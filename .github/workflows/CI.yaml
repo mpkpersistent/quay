@@ -82,7 +82,7 @@ jobs:
               echo "inside ppc64le"
               uname -m
               apt-get update
-              #apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+              apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
               #cat requirements-dev.txt | grep tox | xargs pip install
               tox -e py39-unit
             fi
