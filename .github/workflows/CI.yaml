@@ -64,7 +64,7 @@ jobs:
         go: ${{ fromJSON(needs.config.outputs.go_versions) }}
         # Put non-amd64 platforms that should run tests here:
         platform: ['linux/arm64', 'linux/ppc64le']
-        os: [ ubuntu-20.04 ]
+        os: [ ubuntu20.04 ]
         architecture: [ ppc64le ]
       fail-fast: false
       max-parallel: 2    
