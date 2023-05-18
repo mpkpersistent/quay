@@ -72,7 +72,7 @@ jobs:
     - name: Set up QEMU
       uses: uraimo/run-on-arch-action@v2
       with:
-          distro: ${{ matrix.os }}
+          distro: ubuntu20.04
           arch: ${{ matrix.architecture }}
           run: |
             if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
