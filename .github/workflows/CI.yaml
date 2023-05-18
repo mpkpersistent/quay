@@ -71,7 +71,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Set up QEMU
       uses: uraimo/run-on-arch-action@v2
-        with:
+      with:
           distro: ${{ matrix.os }}
           arch: ${{ matrix.architecture }}
           run: |
