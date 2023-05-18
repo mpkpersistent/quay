@@ -64,20 +64,38 @@ jobs:
         go: ${{ fromJSON(needs.config.outputs.go_versions) }}
         # Put non-amd64 platforms that should run tests here:
         platform: ['linux/arm64', 'linux/ppc64le']
+        architecture: [ ppc64le ]
+      fail-fast: false
+      max-parallel: 2    
     steps:
     - uses: actions/checkout@v2
     - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-      with:
-          platforms: ${{ matrix.platform }}
-    - run: 
-        echo "${{ secrets.QUAY_TOKEN }}" | docker login -u "${{ secrets.QUAY_USER }}" --password-stdin quay.io
-        docker buildx create --use
-        docker run --rm quay.io/${{ secrets.QUAY_USER }} tox -e py39-unit
+      uses: uraimo/run-on-arch-action@v2
+        with:
+          distro: ${{ matrix.os }}
+          arch: ${{ matrix.architecture }}
+          run: |
+            if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
+              echo "amd64"
+            elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
+              sudo apt-get update
+              sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+              cat requirements-dev.txt | grep tox | xargs pip install
+              tox -e py39-unit
+              uname -m
+            fi
+#      uses: docker/setup-qemu-action@v2
+#      with:
+#          platforms: ${{ matrix.platform }}
+#    - run: 
+#        echo "${{ secrets.QUAY_TOKEN }}" | docker login -u "${{ secrets.QUAY_USER }}" --password-stdin quay.io
+#        docker buildx create --use
+#        docker run --rm quay.io/${{ secrets.QUAY_USER }} tox -e py39-unit
 #         docker run
 #          --rm
 #          --platform ${{ matrix.platform }}
 #          tox -e py39-unit
+     
     - name: Set up Python 3.9
       uses: actions/setup-python@v1
       with:
