@@ -9,17 +9,20 @@ import useChrome from '@redhat-cloud-services/frontend-components/useChrome';
 import {NavigationPath} from './NavigationPath';
 import OrganizationsList from './OrganizationsList/OrganizationsList';
 import Organization from './OrganizationsList/Organization/Organization';
-import RepositoryDetails from 'src/routes/RepositoryDetails/RepositoryDetails';
+import RepositoryTagRouter from './RepositoryTagRouter';
 import RepositoriesList from './RepositoriesList/RepositoriesList';
-import TagDetails from 'src/routes/TagDetails/TagDetails';
-import {useEffect, useMemo} from 'react';
+import {useEffect, useState, useMemo} from 'react';
 import {useQuayConfig} from 'src/hooks/UseQuayConfig';
-import SiteUnavailableError from 'src/components/errors/SiteUnavailableError';
 import NotFound from 'src/components/errors/404';
 import {useCurrentUser} from 'src/hooks/UseCurrentUser';
 import {InfoCircleIcon} from '@patternfly/react-icons';
 import {GlobalAuthState} from '../resources/AuthResource';
 import {IsPluginState} from '../atoms/QuayConfigState';
+import {CreateNewUser} from 'src/components/modals/CreateNewUser';
+import NewUserEmptyPage from 'src/components/NewUserEmptyPage';
+import axios from 'axios';
+import axiosIns from 'src/libs/axios';
+
 
 const NavigationRoutes = [
   {
@@ -32,28 +35,35 @@ const NavigationRoutes = [
   },
   {
     path: NavigationPath.repositoriesList,
-    Component: <RepositoriesList />,
+    Component: <RepositoriesList organizationName={null} />,
   },
   {
     path: NavigationPath.repositoryDetail,
-    Component: <RepositoryDetails />,
-  },
-  {
-    path: NavigationPath.tagDetail,
-    Component: <TagDetails />,
+    Component: <RepositoryTagRouter />,
   },
 ];
 
 function PluginMain() {
-  const quayConfig = useQuayConfig();
-  const {loading, error} = useCurrentUser();
   const chrome = useChrome();
-  const setIsPluginState = useSetRecoilState(IsPluginState);
+  if (!chrome) {
+    return null;
+  }
 
-  console.log('useChrome chrome', chrome);
+  if (chrome?.isProd()) {
+    axios.defaults.baseURL = 'https://quay.io';
+    axiosIns.defaults.baseURL = 'https://quay.io';
+  } else {
+    axios.defaults.baseURL = 'https://stage.quay.io';
+    axiosIns.defaults.baseURL = 'https://stage.quay.io';
+  }
+
+  const quayConfig = useQuayConfig();
+  const {user, loading, error} = useCurrentUser();
+
+  const setIsPluginState = useSetRecoilState(IsPluginState);
+  const [isConfirmUserModalOpen, setConfirmUserModalOpen] = useState(false);
 
   chrome?.auth?.getToken().then((token) => {
-    console.log('chrome auth token', token);
     GlobalAuthState.bearerToken = token;
   });
 
@@ -65,7 +75,10 @@ function PluginMain() {
 
   useEffect(() => {
     setIsPluginState(true);
-  }, []);
+    if (user?.prompts && user.prompts.includes("confirm_username")) {
+      setConfirmUserModalOpen(true);
+    }
+  }, [user]);
 
   if (loading) {
     return null;
@@ -73,6 +86,11 @@ function PluginMain() {
 
   return (
     <Page style={{height: '100vh'}}>
+    <CreateNewUser
+      user={user}
+      isModalOpen={isConfirmUserModalOpen}
+      setModalOpen={setConfirmUserModalOpen}
+      />
       <Banner variant="info">
         <Flex
           spaceItems={{default: 'spaceItemsSm'}}
@@ -84,7 +102,7 @@ function PluginMain() {
           <FlexItem>
             Please use{' '}
             <a
-              href="https://forms.gle/M2CtyneF3iaMT5UVA"
+              href="https://7qdvkuo9rkj.typeform.com/to/fuxVxdWM"
               target="_blank"
               rel="noreferrer"
             >
@@ -94,13 +112,19 @@ function PluginMain() {
           </FlexItem>
         </Flex>
       </Banner>
-      <Routes>
-        <Route index element={<Navigate to="organization" replace />} />
-        {NavigationRoutes.map(({path, Component}, key) => (
-          <Route path={path} key={key} element={Component} />
-        ))}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      {user?.prompts && user.prompts.includes('confirm_username') ? (
+        <NewUserEmptyPage
+          setCreateUserModalOpen={setConfirmUserModalOpen}
+        />
+      ) : (
+        <Routes>
+          <Route index element={<Navigate to="organization" replace />} />
+          {NavigationRoutes.map(({path, Component}, key) => (
+            <Route path={path} key={key} element={Component} />
+          ))}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      )}
       <Outlet />
     </Page>
   );

@@ -7,9 +7,9 @@ import {QuaySidebar} from 'src/components/sidebar/QuaySidebar';
 import {NavigationPath} from './NavigationPath';
 import OrganizationsList from './OrganizationsList/OrganizationsList';
 import Organization from './OrganizationsList/Organization/Organization';
-import RepositoryDetails from 'src/routes/RepositoryDetails/RepositoryDetails';
 import RepositoriesList from './RepositoriesList/RepositoriesList';
-import TagDetails from 'src/routes/TagDetails/TagDetails';
+import RepositoryTagRouter from './RepositoryTagRouter';
+
 import {useEffect} from 'react';
 import ErrorBoundary from 'src/components/errors/ErrorBoundary';
 import {useQuayConfig} from 'src/hooks/UseQuayConfig';
@@ -17,6 +17,8 @@ import SiteUnavailableError from 'src/components/errors/SiteUnavailableError';
 import NotFound from 'src/components/errors/404';
 import {useCurrentUser} from 'src/hooks/UseCurrentUser';
 import {InfoCircleIcon} from '@patternfly/react-icons';
+import axios from 'axios';
+import axiosIns from 'src/libs/axios';
 
 const NavigationRoutes = [
   {
@@ -29,21 +31,23 @@ const NavigationRoutes = [
   },
   {
     path: NavigationPath.repositoriesList,
-    Component: <RepositoriesList organizationName={''} />,
+    Component: <RepositoriesList organizationName={null} />,
   },
   {
     path: NavigationPath.repositoryDetail,
-    Component: <RepositoryDetails />,
-  },
-  {
-    path: NavigationPath.tagDetail,
-    Component: <TagDetails />,
+    Component: <RepositoryTagRouter />,
   },
 ];
 
 export function StandaloneMain() {
+  axios.defaults.baseURL =
+    process.env.REACT_QUAY_APP_API_URL ||
+    `${window.location.protocol}//${window.location.host}`;
+  axiosIns.defaults.baseURL = axios.defaults.baseURL;
+
   const quayConfig = useQuayConfig();
   const {loading, error} = useCurrentUser();
+
 
   useEffect(() => {
     if (quayConfig?.config?.REGISTRY_TITLE) {
@@ -74,7 +78,7 @@ export function StandaloneMain() {
             <FlexItem>
               Please use{' '}
               <a
-                href="https://forms.gle/M2CtyneF3iaMT5UVA"
+                href="https://7qdvkuo9rkj.typeform.com/to/fuxVxdWM"
                 target="_blank"
                 rel="noreferrer"
               >

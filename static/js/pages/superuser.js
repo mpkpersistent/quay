@@ -42,13 +42,15 @@
       'page': 0,
     }
     $scope.disk_size_units = {
-      'KB': 1024,
-      'MB': 1024**2,
-      'GB': 1024**3,
-      'TB': 1024**4,
+      'KB': 1000,
+      'MB': 1000**2,
+      'GB': 1000**3,
+      'TB': 1000**4,
     };
     $scope.quotaUnits = Object.keys($scope.disk_size_units);
     $scope.registryQuota = null;
+    $scope.backgroundLoadingOrgs = false;
+    $scope.errorLoadingOrgs = false;
 
     $scope.showQuotaConfig = function (org) {
         if (StateService.inReadOnlyMode()) {
@@ -65,7 +67,7 @@
 
       for (const key in units) {
         byte_unit = units[key];
-        result = Math.round(bytes / $scope.disk_size_units[byte_unit]);
+        result = (bytes / $scope.disk_size_units[byte_unit]).toFixed(2)
         if (bytes >= $scope.disk_size_units[byte_unit]) {
           return result.toString() + " " + byte_unit;
         }
@@ -131,11 +133,28 @@
     }
 
     $scope.loadOrganizationsInternal = function() {
-      $scope.organizationsResource = ApiService.listAllOrganizationsAsResource().get(function(resp) {
-        $scope.organizations = resp['organizations'];
+      $scope.organizations = [];
+      if($scope.backgroundLoadingOrgs){
+        return;
+      }
+      loadPaginatedOrganizations();
+    };
+
+    var loadPaginatedOrganizations = function(nextPageToken = null) {
+      $scope.backgroundLoadingOrgs = true;
+      var params = nextPageToken != null ? {limit: 100, next_page: nextPageToken} : {limit: 100};
+      ApiService.listAllOrganizationsAsResource(params).get(function(resp) {
+        $scope.organizations = [...$scope.organizations, ...resp['organizations']];
+        if(resp["next_page"] != null){
+          loadPaginatedOrganizations(resp["next_page"]);
+        } else {
+          $scope.backgroundLoadingOrgs = false;
+          caclulateRegistryStorage();
+        }
         sortOrgs();
-        caclulateRegistryStorage();
-        return $scope.organizations;
+      }, function(resp){
+        $scope.errorLoadingOrgs = true;
+        $scope.backgroundLoadingOrgs = false;
       });
     };
 
