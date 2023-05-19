@@ -84,6 +84,7 @@ jobs:
               apt-get update
               apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
               cat requirements-dev.txt | grep tox | xargs pip install
+              echo "tox execution"
               #tox -e py39-unit
               tox -e python3.8-unit
             fi
