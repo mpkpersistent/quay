@@ -81,21 +81,16 @@ jobs:
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               echo "inside ppc64le"
               uname -m
-              apt update
-              apt install software-properties-common
-              add-apt-repository -y ppa:deadsnakes/ppa
-              apt install python3.9
               
-              python3.9 --version
               apt-get update
               apt-get install -y python3.9-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
               apt-get install -y build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc
                   
-              pip3 install --upgrade pip 
-              pip3 install pylibjpeg-libjpeg==1.2.0 
-              pip3 install Pillow
-              pip3 install cffi
-              pip3 install cryptography
+              pip install --upgrade pip 
+              pip install pylibjpeg-libjpeg==1.2.0 
+              pip install Pillow
+              pip install cffi
+              pip install cryptography
               cat requirements-dev.txt | grep tox | xargs pip install
               echo "tox execution"
               tox -e py39-unit
@@ -203,11 +198,11 @@ jobs:
               apt-get install -y python3.9-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
               apt-get install -y build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc
               
-              pip3 install --upgrade pip 
-              pip3 install pylibjpeg-libjpeg==1.2.0 
-              pip3 install Pillow
-              pip3 install cffi
-              pip3 install cryptography
+              pip install --upgrade pip 
+              pip install pylibjpeg-libjpeg==1.2.0 
+              pip install Pillow
+              pip install cffi
+              pip install cryptography
               cat requirements-dev.txt | grep tox | xargs pip install
               echo "tox execution"
               tox -e py39-e2e
