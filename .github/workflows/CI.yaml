@@ -178,6 +178,8 @@ jobs:
         go: ${{ fromJSON(needs.config.outputs.go_versions) }}
         # Put non-amd64 platforms that should run tests here:
         platform: ['linux/arm64', 'linux/ppc64le']
+        os: [ ubuntu20.04 ]
+        architecture: [ ppc64le ]
     steps:
 
     - uses: actions/checkout@v2
