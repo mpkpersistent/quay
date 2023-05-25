@@ -82,6 +82,11 @@ jobs:
               echo "inside ppc64le"
               uname -m
               python3 --version
+              apt update
+              apt install software-properties-common
+              add-apt-repository -y ppa:deadsnakes/ppa
+              apt install python3.9
+              
               python3.9 --version
               apt-get update
               apt-get install -y python3.9-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
