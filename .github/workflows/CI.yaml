@@ -181,25 +181,49 @@ jobs:
     steps:
 
     - uses: actions/checkout@v2
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+    - uses: uraimo/run-on-arch-action@v2
       with:
-          platforms: ${{ matrix.platform }}
-    - run: >-
-          uname -m
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.9
-        architecture: x64
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
-        python -m pip install --upgrade pip
-        cat requirements-dev.txt | grep tox | xargs pip install
-    - name: tox
-      run: tox -e py39-e2e
+          distro: ${{ matrix.os }}
+          arch: ${{ matrix.architecture }}
+          run: |
+            if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
+              echo "amd64"
+            elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
+              echo "inside ppc64le"
+              uname -m
+              apt-get update
+              apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
+              apt-get install -y build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc rustup
+
+              pip3 install --upgrade pip 
+              pip3 install pylibjpeg-libjpeg==1.2.0 
+              pip3 install Pillow
+              pip3 install cffi
+              pip3 install cryptography
+              cat requirements-dev.txt | grep tox | xargs pip install
+              echo "tox execution"
+              tox -e py39-e2e
+            fi
+    
+#    - name: Set up QEMU
+#      uses: docker/setup-qemu-action@v2
+#      with:
+#          platforms: ${{ matrix.platform }}
+#    - run: >-
+#          uname -m
+#    - name: Set up Python 3.9
+#      uses: actions/setup-python@v1
+#      with:
+#        python-version: 3.9
+#        architecture: x64
+#    - name: Install dependencies
+#      run: |
+#        sudo apt-get update
+#        sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+#        python -m pip install --upgrade pip
+#        cat requirements-dev.txt | grep tox | xargs pip install
+#    - name: tox
+#      run: tox -e py39-e2e
 
   registry:
     name: E2E Registry Tests
