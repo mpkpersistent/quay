@@ -81,6 +81,7 @@ jobs:
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               echo "inside ppc64le"
               uname -m
+              python3 --version
               python3.9 --version
               apt-get update
               apt-get install -y python3.9-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
