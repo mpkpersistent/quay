@@ -88,6 +88,7 @@ jobs:
               curl https://sh.rustup.rs -sSf | bash -s -- -y
               echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
               pip install --upgrade pip 
+              pip install pip==23.1
               pip install pylibjpeg-libjpeg==1.2.0 
               pip install Pillow
               pip install cffi
