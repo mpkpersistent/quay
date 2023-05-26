@@ -94,6 +94,7 @@ jobs:
               pip install cffi
               echo "pip upgraded"
               echo "pip upgraded to $(pip --version)"
+              echo "rustcversion is $(rustc--version)"
               #pip install cryptography==3.1.1
               pip install cryptography
               cat requirements-dev.txt | grep tox | xargs pip install
