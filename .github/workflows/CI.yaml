@@ -94,7 +94,8 @@ jobs:
               pip install cffi
               echo "pip upgraded"
               echo "pip upgraded to $(pip --version)"
-              pip install cryptography==3.1.1
+              #pip install cryptography==3.1.1
+              pip install cryptography
               cat requirements-dev.txt | grep tox | xargs pip install
               echo "tox execution"
               tox -e py39-unit
