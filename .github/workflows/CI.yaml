@@ -209,7 +209,8 @@ jobs:
               pip install pylibjpeg-libjpeg==1.2.0 
               pip install Pillow
               pip install cffi
-              pip install cryptography
+              #pip install cryptography
+              pip install cryptograpy==3.4.8
               cat requirements-dev.txt | grep tox | xargs pip install
               echo "tox execution"
               tox -e py39-e2e
