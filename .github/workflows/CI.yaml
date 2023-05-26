@@ -87,10 +87,12 @@ jobs:
               apt-get install -y build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc
               curl https://sh.rustup.rs -sSf | bash -s -- -y
               echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
-              pip install -u pip 
+              pip install --upgrade pip 
               pip install pylibjpeg-libjpeg==1.2.0 
               pip install Pillow
               pip install cffi
+              echo "pip upgraded"
+              echo "pip upgraded to $(pip --version)"
               pip install cryptography==3.1.1
               cat requirements-dev.txt | grep tox | xargs pip install
               echo "tox execution"
