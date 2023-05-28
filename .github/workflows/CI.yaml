@@ -91,6 +91,7 @@ jobs:
               pip install pip==23.1
               pip install pylibjpeg-libjpeg==1.2.0 
               pip install Pillow
+              pip install pyopenssl
               pip install cffi
               echo "pip upgraded"
               echo "pip upgraded to $(pip --version)"
