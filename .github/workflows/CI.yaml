@@ -95,7 +95,7 @@ jobs:
               python3 -m venv quay-venv
               source quay-venv/bin/activate
               apt-get update
-              python3 -m pip install  pip setuptools wheel--upgrade
+              python3 -m pip install  pip setuptools wheel --upgrade
               python3 -m pip install Pillow
               python3 -m pip install pylibjpeg-libjpeg==1.2.0
               python3 -m pip install pyopenssl
