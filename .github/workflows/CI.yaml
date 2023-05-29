@@ -83,16 +83,16 @@ jobs:
               uname -m
               apt-get update
               apt-get install -y python3.9-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
-              apt-get install -y curl build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc apt install python3.9-venv
+              apt-get install -y curl build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc apt install python3.8-venv
               apt-get install -y software-properties-common
-              add-apt-repository -y ppa:deadsnakes/ppa
-              apt-get install -y python3.9 
-              apt-get install -y python3-pip
+              #add-apt-repository -y ppa:deadsnakes/ppa
+              #apt-get install -y python3.9 
+              #apt-get install -y python3-pip
               curl https://sh.rustup.rs -sSf | bash -s -- -y
               echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
               echo "Before venv"
-              python3 -m venv test-venv
-              source test-venv/bin/activate
+              python3 -m venv quay-venv
+              source quay-venv/bin/activate
               apt-get update
               python3 -m pip install --upgrade pip setuptools
               python3 -m pip install Pillow
