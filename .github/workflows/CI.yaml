@@ -88,7 +88,7 @@ jobs:
               curl https://sh.rustup.rs -sSf | bash -s -- -y
               echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
               pip install --upgrade pip
-              #==========================
+              
               apt-get install -y software-properties-common
               add-apt-repository -y ppa:deadsnakes/ppa
               # Install py39 from deadsnakes repository
@@ -98,13 +98,12 @@ jobs:
               
               apt-get update -y
               python3.9 -m pip install --upgrade pip setuptools
-           
               python3.9 -m pip install Pillow
               python3.9 -m pip install pylibjpeg-libjpeg==1.2.0
               pip install pyopenssl
+              #echo "pyopenssl done.  $(python3.9 -m pip install --no-use-pep517 cryptography==)"
               python3.9 -m pip install cffi
-              python3.9 -m pip install scrapy==2.6.2
-              python3.9 -m pip install --no-use-pep517 cryptography 
+              python3.9 -m pip install --no-use-pep517 cryptography --pre -vvv
               #======================
 
               
