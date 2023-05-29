@@ -102,7 +102,7 @@ jobs:
               python3.9 -m pip install pylibjpeg-libjpeg==1.2.0
               pip install pyopenssl
               python3.9 -m pip install cffi
-              python3.9 -m pip install cryptography
+              python3.9 -m pip install cryptography --no-use-pep517
               #======================
 
               
