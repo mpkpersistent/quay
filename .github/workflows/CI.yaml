@@ -90,16 +90,17 @@ jobs:
               apt-get install -y python3-pip
               curl https://sh.rustup.rs -sSf | bash -s -- -y
               echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
-              python3.9 -m venv test-venv
+              echo "Before venv"
+              python3 -m venv test-venv
               source test-venv/bin/activate
               apt-get update
-              python3.9 -m pip install --upgrade pip setuptools
-              python3.9 -m pip install Pillow
-              python3.9 -m pip install pylibjpeg-libjpeg==1.2.0
+              python3 -m pip install --upgrade pip setuptools
+              python3 -m pip install Pillow
+              python3 -m pip install pylibjpeg-libjpeg==1.2.0
               pip install pyopenssl
               echo "pyopenssl done."
-              python3.9 -m pip install cffi
-              python3.9 -m pip install --no-use-pep517 cryptography --pre -vvv
+              pip install cffi
+              pip install --no-use-pep517 cryptography --pre -vvv
               #======================
 
               
