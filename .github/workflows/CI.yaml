@@ -87,20 +87,38 @@ jobs:
               apt-get install -y curl build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc
               curl https://sh.rustup.rs -sSf | bash -s -- -y
               echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
-              pip install --upgrade pip 
-              pip install pip==23.1
-              pip install pylibjpeg-libjpeg==1.2.0 
-              pip install Pillow
+              pip install --upgrade pip
+              #==========================
+              apt-get install software-properties-common
+              add-apt-repository ppa:deadsnakes/ppa
+              # Install py39 from deadsnakes repository
+              apt-get install python3.9 
+              # Install pip from standard ubuntu packages
+              apt-get install python3-pip
+              
+              apt-get update
+              python3.9 -m pip install --upgrade pip
+              python3.9 -m pip install Pillow
+              python3.9 -m pip install pylibjpeg-libjpeg==1.2.0
               pip install pyopenssl
-              pip install cffi
+              python3.9 -m pip install cffi
+              python3.9 -m pip install cryptography
+              #======================
+
+              
+              #pip install pip==23.1
+              #pip install pylibjpeg-libjpeg==1.2.0 
+              #pip install Pillow
+              #pip install pyopenssl
+              #pip install cffi
               echo "pip upgraded"
-              echo "pip upgraded to $(pip --version)"
-              echo "pip3 upgraded to $(pip3 --version)"
+              #echo "pip upgraded to $(pip --version)"
+              #echo "pip3 upgraded to $(pip3 --version)"
               #echo "rustcversion is $(rustc--version)"
               #pip install cryptography==3.1.1
               #pip install cryptograpy==3.4.8
               #pip install cryptograpy==38.0.0
-              pip install cryptography
+              #pip install cryptography
               cat requirements-dev.txt | grep tox | xargs pip install
               echo "tox execution"
               tox -e py39-unit
