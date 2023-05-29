@@ -83,7 +83,7 @@ jobs:
               uname -m
               apt-get update
               apt-get install -y python3.9-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
-              apt-get install -y curl build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc
+              apt-get install -y curl build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc apt install python3.9-venv
               apt-get install -y software-properties-common
               add-apt-repository -y ppa:deadsnakes/ppa
               apt-get install -y python3.9 
