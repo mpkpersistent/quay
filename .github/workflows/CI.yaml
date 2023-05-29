@@ -89,14 +89,14 @@ jobs:
               echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
               pip install --upgrade pip
               #==========================
-              apt-get install software-properties-common
-              add-apt-repository ppa:deadsnakes/ppa
+              apt-get install -y software-properties-common
+              add-apt-repository -y ppa:deadsnakes/ppa
               # Install py39 from deadsnakes repository
-              apt-get install python3.9 
+              apt-get install -y  python3.9 
               # Install pip from standard ubuntu packages
-              apt-get install python3-pip
+              apt-get install -y python3-pip
               
-              apt-get update
+              apt-get update -y
               python3.9 -m pip install --upgrade pip
               python3.9 -m pip install Pillow
               python3.9 -m pip install pylibjpeg-libjpeg==1.2.0
