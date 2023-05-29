@@ -98,10 +98,10 @@ jobs:
               python3 -m pip install  pip setuptools wheel --upgrade
               python3 -m pip install Pillow
               python3 -m pip install pylibjpeg-libjpeg==1.2.0
-              python3 -m pip install pyopenssl
+              python3 -m pip install pyopenssl==22.1.0
               echo "pyopenssl done."
               python3 -m pip install cffi
-              python3 -m pip install --no-use-pep517 cryptography --pre -vvv
+              python3 -m pip install cryptography -vvv
               #======================
 
               
