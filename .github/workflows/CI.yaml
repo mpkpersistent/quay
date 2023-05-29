@@ -81,25 +81,23 @@ jobs:
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               echo "inside ppc64le"
               uname -m
-              
               apt-get update
               apt-get install -y python3.9-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
               apt-get install -y curl build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc
-              curl https://sh.rustup.rs -sSf | bash -s -- -y
-              echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
-              pip install --upgrade pip
-        
               apt-get install -y software-properties-common
               add-apt-repository -y ppa:deadsnakes/ppa
               apt-get install -y python3.9 
               apt-get install -y python3-pip
-              
+              curl https://sh.rustup.rs -sSf | bash -s -- -y
+              echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
+              python3.9 -m venv test-venv
+              source test-venv/bin/activate
               apt-get update
               python3.9 -m pip install --upgrade pip setuptools
               python3.9 -m pip install Pillow
               python3.9 -m pip install pylibjpeg-libjpeg==1.2.0
               pip install pyopenssl
-              #echo "pyopenssl done.  $(python3.9 -m pip install --no-use-pep517 cryptography==)"
+              echo "pyopenssl done."
               python3.9 -m pip install cffi
               python3.9 -m pip install --no-use-pep517 cryptography --pre -vvv
               #======================
