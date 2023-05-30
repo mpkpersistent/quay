@@ -100,7 +100,7 @@ jobs:
               pip3 install  pip setuptools wheel --upgrade
               pip3 install Pillow  setuptools-rust
               #pip3 install pylibjpeg-libjpeg==1.2.0
-              pip3 install pylibjpeg-libjpeg
+              pip3 install pylibjpeg-libjpeg==1.2.0
               pip3 install cffi 
               pip3 uninstall pyopenssl 
               pip3 uninstall cryptography
