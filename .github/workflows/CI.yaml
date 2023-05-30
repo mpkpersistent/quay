@@ -96,13 +96,14 @@ jobs:
               echo "Before venv"
               
               #apt-get update
-              python3 -m pip install  pip setuptools wheel --upgrade
-              python3 -m pip install Pillow
-              python3 -m pip install pylibjpeg-libjpeg==1.2.0
+              python3.9 -m pip install  pip setuptools wheel --upgrade
+              python3.9 -m pip install Pillow
+              python3.9 -m pip install pylibjpeg-libjpeg==1.2.0
               pip uninstall pyopenssl 
               pip uninstall cryptography
-              pip install pyopenssl
-              pip install cryptography
+              python3.9 -m pip check pyopenssl
+              python3.9 -m pip install pyopenssl==22.1.0
+              python3.9 -m pip install cryptography -vvv
               #python3 -m pip install pyopenssl==22.1.0
               echo "pyopenssl done."
               python3 -m pip install cffi
