@@ -81,6 +81,8 @@ jobs:
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               echo "inside ppc64le"
               uname -m
+              
+              apt install software-properties-common
               add-apt-repository -y ppa:deadsnakes/ppa
               apt install -y python3.9 
               apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
