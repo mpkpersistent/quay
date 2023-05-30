@@ -81,16 +81,17 @@ jobs:
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               echo "inside ppc64le"
               uname -m
-              apt-get update
-              apt-get install -y python3.8-venv
-              python3 -m venv quay-venv
-              source quay-venv/bin/activate
-              apt-get install -y python3.8-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
-              apt-get install -y curl build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc pypy
-              apt-get install -y software-properties-common
               add-apt-repository -y ppa:deadsnakes/ppa
               apt-get install -y python3.9 
               apt-get install -y python3-pip
+              apt-get install -y python3.9-venv
+              python3 -m venv quay-venv
+              source quay-venv/bin/activate
+              apt-get update
+              apt-get install -y python3.8-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
+              apt-get install -y curl build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc pypy
+              apt-get install -y software-properties-common
+              
               curl https://sh.rustup.rs -sSf | bash -s -- -y
               echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
               echo "Before venv"
@@ -103,7 +104,7 @@ jobs:
               pip3 uninstall cryptography
               pip3 check pyopenssl
               pip3 install pyopenssl==22.1.0
-              pip3 install cryptography -vvv
+              #pip3 install cryptography -vvv
               #python3 -m pip3 install pyopenssl==22.1.0
               echo "pyopenssl done."
               pip3 install cffi
