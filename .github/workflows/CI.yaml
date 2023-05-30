@@ -82,36 +82,33 @@ jobs:
               echo "inside ppc64le"
               uname -m
               
-              apt install software-properties-common
-              add-apt-repository -y ppa:deadsnakes/ppa
-              apt install -y python3.9 
-              apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
+              
               apt-get install -y python3-pip
               apt-get install -y python3.9-venv
               python3.9 -m venv quay-venv
               source quay-venv/bin/activate
-              apt-get update
-              apt-get install -y python3.8-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
-              apt-get install -y curl build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc pypy
-              apt-get install -y software-properties-common
+              sudo apt-get update
+              sudo apt-get install -y python3.8-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
+              sudo apt-get install -y curl build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc pypy
+              sudo apt-get install -y software-properties-common
               
-              curl https://sh.rustup.rs -sSf | bash -s -- -y
+              sudo curl https://sh.rustup.rs -sSf | bash -s -- -y
               echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
               echo "Before venv"
               echo "rustcversion is $(rustc --version)"
               #apt-get update
-              pip3 install  pip setuptools wheel --upgrade
-              pip3 install Pillow interface zope
-              pip3 install pylibjpeg-libjpeg==1.2.0
-              pip3 uninstall pyopenssl 
-              pip3 uninstall cryptography
-              pip3 check pyopenssl
-              pip3 install  --force-reinstall pyopenssl==22.1.0 -vvv
+              sudo pip3 install  pip setuptools wheel --upgrade
+              sudo pip3 install Pillow interface zope
+              sudo pip3 install pylibjpeg-libjpeg==1.2.0
+              sudo pip3 uninstall pyopenssl 
+              sudo pip3 uninstall cryptography
+              sudo pip3 check pyopenssl
+              sudo pip3 install  --force-reinstall pyopenssl==22.1.0 -vvv
               #pip3 install cryptography -vvv
               #python3 -m pip3 install pyopenssl==22.1.0
               echo "pyopenssl done."
-              pip3 install cffi
-              pip3 install cryptography -vvv
+              sudo pip3 install cffi
+              sudo pip3 install cryptography -vvv
               #======================
 
               
