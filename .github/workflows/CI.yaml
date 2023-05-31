@@ -101,7 +101,7 @@ jobs:
               pip3 install pillow  setuptools-rust
               #pip3 install pylibjpeg-libjpeg==1.2.0
               pip3 install pylibjpeg-libjpeg==1.2.0
-              pip3 install cffi 
+              pip3 install cffi pycairo pygobject
               pip3 uninstall pyopenssl 
               pip3 uninstall cryptography
               pip3 check pyopenssl
