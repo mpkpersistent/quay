@@ -105,7 +105,7 @@ jobs:
               pip3 uninstall pyopenssl 
               pip3 uninstall cryptography
               pip3 check pyopenssl
-              pip3 install pyopenssl==20.0.0
+              pip3 install pyopenssl==22.0.0
               #pip3 install cryptography -vvv
               #python3 -m pip3 install pyopenssl==22.1.0
               echo "pyopenssl done."
