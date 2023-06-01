@@ -102,7 +102,7 @@ jobs:
               echo "rustcversion is $(rustc --version)"
               #apt-get update
               pip3 install  pip setuptools wheel --upgrade
-              pip3 install pillow  setuptools-rust
+              pip3 install pillow  setuptools-rust pycairo pygobject
               #pip3 install pylibjpeg-libjpeg==1.2.0
               pip3 install pylibjpeg-libjpeg==1.2.0
               pip3 install cffi
