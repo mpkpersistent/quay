@@ -86,7 +86,7 @@ jobs:
               apt-get install -y python3-pip
               apt-get install -y python3.8-venv
               apt install -y software-properties-common
-              add-apt-repository ppa:deadsnakes/ppa
+              add-apt-repository -y ppa:deadsnakes/ppa
               apt install -y python3.9
 
               #python3 -m venv quay-venv
