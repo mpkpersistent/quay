@@ -127,6 +127,8 @@ jobs:
               echo "pip upgraded"
               echo "python version is $(python --version)"
               echo "python3 version is $(python3 --version)"
+              echo "python3.9 version is $(python3.9 --version)"
+              
               #echo "pip upgraded to $(pip --version)"
               #echo "pip3 upgraded to $(pip3 --version)"
               #echo "rustcversion is $(rustc--version)"
