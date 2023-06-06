@@ -194,42 +194,20 @@ jobs:
               echo "amd64"
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               echo "inside ppc64le"
+              run: |
+            if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
+              echo "amd64"
+            elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               uname -m
-              apt-get update
-              apt-get install -y python3.9-dev libjpeg-dev libgpgme-dev libldap2-dev libsasl2-dev swig python3-pip
-              apt-get install -y build-essential libssl-dev libffi-dev python3-dev cargo pkg-config rustc
-              
-              pip install --upgrade pip 
-              pip install pylibjpeg-libjpeg==1.2.0 
-              pip install Pillow
-              pip install cffi
-              #pip install cryptography
-              pip install cryptograpy==3.4.8
-              cat requirements-dev.txt | grep tox | xargs pip install
-              echo "tox execution"
-              tox -e py39-e2e
+              apt-get -y update;
+              apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils git;
+              apt-get -y install libffi-dev libssl-dev libjpeg-dev git;
+              #git clone ${GH_REPOSITORY} build;
+              git clone ${{ github.server_url }}/${{ github.repository }} build;
+              cd build            
+              cat requirements-dev.txt | grep tox | xargs pip install;
+              tox -e py39-e2e;
             fi
-    
-#    - name: Set up QEMU
-#      uses: docker/setup-qemu-action@v2
-#      with:
-#          platforms: ${{ matrix.platform }}
-#    - run: >-
-#          uname -m
-#    - name: Set up Python 3.9
-#      uses: actions/setup-python@v1
-#      with:
-#        python-version: 3.9
-#        architecture: x64
-#    - name: Install dependencies
-#      run: |
-#        sudo apt-get update
-#        sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
-#        python -m pip install --upgrade pip
-#        cat requirements-dev.txt | grep tox | xargs pip install
-#    - name: tox
-#      run: tox -e py39-e2e
-
   registry:
     name: E2E Registry Tests
     runs-on: ubuntu-20.04
