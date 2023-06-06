@@ -87,8 +87,7 @@ jobs:
               git clone ${GH_REPOSITORY} build;
               cd build  && git checkout ${GH_REF};
               cat requirements-dev.txt | grep tox | xargs pip install;
-              tox -e py39-unit;'
-              
+              tox -e py39-unit;
             fi
 #      uses: docker/setup-qemu-action@v2
 #      with:
