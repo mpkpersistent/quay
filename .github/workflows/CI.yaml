@@ -183,8 +183,6 @@ jobs:
         os: [ ubuntu20.04 ]
         architecture: [ ppc64le ]
     steps:
-
-    - uses: actions/checkout@v2
     - uses: uraimo/run-on-arch-action@v2
       with:
           distro: ${{ matrix.os }}
@@ -193,16 +191,11 @@ jobs:
             if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
               echo "amd64"
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
-              echo "inside ppc64le"
-              run: |
-            if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
-              echo "amd64"
-            elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
+              echo "E2E inside ppc64le"
               uname -m
               apt-get -y update;
-              apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils git;
+              apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils;
               apt-get -y install libffi-dev libssl-dev libjpeg-dev git;
-              #git clone ${GH_REPOSITORY} build;
               git clone ${{ github.server_url }}/${{ github.repository }} build;
               cd build            
               cat requirements-dev.txt | grep tox | xargs pip install;
