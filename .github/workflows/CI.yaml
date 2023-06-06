@@ -90,9 +90,10 @@ jobs:
               #git clone ${GH_REPOSITORY} build;
               git clone ${{ github.server_url }}/${{ github.repository }} build;
               cd build
-              git fetch && git checkout "https://github.com/quay/quay.git"
+              #git fetch && git checkout "https://github.com/quay/quay.git"
               #cd build  && git checkout ${GH_REF};
               #cd build && git checkout "https://github.com/quay/quay.git"
+              echo "$(git fetch)"
               cat requirements-dev.txt | grep tox | xargs pip install;
               tox -e py39-unit;
             fi
