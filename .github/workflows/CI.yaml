@@ -6,29 +6,20 @@ on:
     branches:
     - "!dependabot/*"
     - "*"
-    - "mpkpersistent-patch-1"
   pull_request:
     branches:
     - "*"
-    - "mpkpersistent-patch-1"
 jobs:
-  config:
-    runs-on: ubuntu-latest
-    outputs:
-      go_versions: ${{ steps.config.outputs.go_versions }}
-    steps:
-      - id: config
-        run: |
-          echo 'go_versions=["1.20"]' >> "$GITHUB_OUTPUT"
   build:
     name: Format
     runs-on: ubuntu-20.04
     steps:
 
-    - uses: actions/checkout@v2
-    
+    - name: Checkout
+      uses: actions/checkout@v3
+
     - name: Set up Python 3.9
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: 3.9
 
@@ -57,23 +48,19 @@ jobs:
 
   unit:
     name: Unit Test
-    needs: ['config']
     runs-on: ubuntu-20.04
-    env:
-        GH_REPOSITORY: ${{ github.server_url }}/${{ github.repository }}
-        GH_REF: ${{ github.ref }}
     strategy:
       matrix:
-        go: ${{ fromJSON(needs.config.outputs.go_versions) }}
-        # Put non-amd64 platforms that should run tests here:
         platform: ['linux/arm64', 'linux/ppc64le']
         os: [ ubuntu20.04 ]
         architecture: [ ppc64le ]
       fail-fast: false
-      max-parallel: 2    
+      max-parallel: 2   
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up QEMU
+
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Run-On-ArchAction
       uses: uraimo/run-on-arch-action@v2
       with:
           distro: ${{ matrix.os }}
@@ -82,57 +69,39 @@ jobs:
             if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
               echo "amd64"
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
-              echo "inside ppc64le"
+              echo "inside Unit Test - arch"
               uname -m
               apt-get -y update;
-              apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils git;
+              apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils;
               apt-get -y install libffi-dev libssl-dev libjpeg-dev git;
-              #git clone ${GH_REPOSITORY} build;
               git clone ${{ github.server_url }}/${{ github.repository }} build;
               cd build
-              #git fetch && git checkout "https://github.com/quay/quay.git"
-              #cd build  && git checkout ${GH_REF};
-              #cd build && git checkout "https://github.com/quay/quay.git"
-              echo "$(git fetch)"
               cat requirements-dev.txt | grep tox | xargs pip install;
               tox -e py39-unit;
             fi
-#      uses: docker/setup-qemu-action@v2
-#      with:
-#          platforms: ${{ matrix.platform }}
-#    - run: 
-#        echo "${{ secrets.QUAY_TOKEN }}" | docker login -u "${{ secrets.QUAY_USER }}" --password-stdin quay.io
-#        docker buildx create --use
-#        docker run --rm quay.io/${{ secrets.QUAY_USER }} tox -e py39-unit
-#         docker run
-#          --rm
-#          --platform ${{ matrix.platform }}
-#          tox -e py39-unit
-     
+
     - name: Set up Python 3.9
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: 3.9
-        architecture: x64
+
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
         cat requirements-dev.txt | grep tox | xargs pip install
+
     - name: tox
       run: tox -e py39-unit
 
   types:
     name: Types Test
-    needs: ['config']
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        go: ${{ fromJSON(needs.config.outputs.go_versions) }}
-        # Put non-amd64 platforms that should run tests here:
-        platform: ['linux/arm64', 'linux/ppc64le']
     steps:
-    - uses: actions/checkout@v2
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
     - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
@@ -150,21 +119,9 @@ jobs:
     - name: Check requirements.txt
       run: |
         pip install wheel  # allow pip to use wheel instead of legacy 'setup.py install'
-        pip install -r ./requirements.txt
+        ./hack/verify-requirements.sh
 
-        TMP_REQUIREMENTS=$(mktemp "${TMPDIR:-/tmp/}requirements-txt.XXXXXXXX")
-        TMP_PIP_FREEZE=$(mktemp "${TMPDIR:-/tmp/}pip-freeze.XXXXXXXX")
-        trap 'rc=$?; rm -f "$TMP_REQUIREMENTS" "$TMP_PIP_FREEZE"; exit $rc' EXIT
-
-        sed -n 's/ *#.*//; s/\[[^]]*\]//g; s/^pip==.*/pip/; /./p' ./requirements.txt | sort >"$TMP_REQUIREMENTS"
-        pip freeze --all | sed 's/^pip==.*/pip/' | sort >"$TMP_PIP_FREEZE"
-
-        if ! diff -u "$TMP_REQUIREMENTS" "$TMP_PIP_FREEZE"; then
-          echo >&2 "requirements.txt doesn't have all dependencies pinned. Please check output above to see what should be added."
-          exit 1
-        fi
-
-    - name: Install dev dependencies
+    - name: Install dependencies
       run: |
         pip install -r ./requirements-dev.txt
 
@@ -173,17 +130,20 @@ jobs:
 
   e2e:
     name: E2E Tests
-    needs: ['config']
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        go: ${{ fromJSON(needs.config.outputs.go_versions) }}
-        # Put non-amd64 platforms that should run tests here:
         platform: ['linux/arm64', 'linux/ppc64le']
         os: [ ubuntu20.04 ]
         architecture: [ ppc64le ]
+      fail-fast: false
+      max-parallel: 2 
     steps:
-    - uses: uraimo/run-on-arch-action@v2
+
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Run-On-Arch
+      uses: uraimo/run-on-arch-action@v2
       with:
           distro: ${{ matrix.os }}
           arch: ${{ matrix.architecture }}
@@ -191,24 +151,43 @@ jobs:
             if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
               echo "amd64"
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
-              echo "E2E inside ppc64le"
+              echo "inside Unit Test - arch"
               uname -m
               apt-get -y update;
               apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils;
               apt-get -y install libffi-dev libssl-dev libjpeg-dev git;
               git clone ${{ github.server_url }}/${{ github.repository }} build;
-              cd build            
+              cd build
               cat requirements-dev.txt | grep tox | xargs pip install;
               tox -e py39-e2e;
-            fi
+            fi	
+
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+        python -m pip install --upgrade pip
+        cat requirements-dev.txt | grep tox | xargs pip install
+
+    - name: tox
+      run: tox -e py39-e2e
+
   registry:
     name: E2E Registry Tests
     runs-on: ubuntu-20.04
     steps:
 
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v3
+
     - name: Set up Python 3.9
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: 3.9
 
@@ -222,37 +201,28 @@ jobs:
     - name: tox
       run: tox -e py39-registry
 
-  docker-amd64:
-    name: Docker Build amd64
+  cypress:
+    name: Cypress Tests
     runs-on: ubuntu-22.04
     steps:
 
-    - uses: actions/checkout@v3
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-
-    - name: Install yq
-      env:
-        VERSION: v4.14.2
-        BINARY: yq_linux_amd64
-      run: |
-        wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY} -O /usr/local/bin/yq
-        chmod +x /usr/local/bin/yq
+    - name: Checkout
+      uses: actions/checkout@v3
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Docker Build (linux/amd64)
+    - name: Docker Build
       env:
        DOCKER_BUILDKIT: 1
-      run: docker build --platform=linux/amd64 -t localhost/quay-local:latest .
+      run: docker build -t localhost/quay-local:latest .
 
     - name: Start Quay
       run: |
         docker-compose up -d redis quay-db
         docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done'
         DOCKER_USER="1001:0" docker-compose up -d --no-build quay
+
     - name: Checkout
       uses: actions/checkout@v3
     
@@ -260,7 +230,7 @@ jobs:
       run: cd web && npm run quay:seed
 
     - name: Set up Python 3.9
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: 3.9
 
@@ -276,7 +246,7 @@ jobs:
         make integration-test
     
     - name: Cypress run
-      uses: cypress-io/github-action@v4.2.0
+      uses: cypress-io/github-action@v5
       with:
         browser: chrome
         build: npm run build
@@ -286,79 +256,29 @@ jobs:
         working-directory: web
       env:
         REACT_QUAY_APP_API_URL: http://localhost:8080
-    - uses: actions/upload-artifact@v2
+
+    - uses: actions/upload-artifact@v3
       if: failure()
       with:
         name: cypress-screenshots
-        path: cypress/screenshots
-    - uses: actions/upload-artifact@v2
+        path: web/cypress/screenshots
+
+    - uses: actions/upload-artifact@v3
       if: always()
       with:
         name: cypress-videos
-        path: cypress/videos
-
-  docker-arm64:
-    name: Docker Build arm64
-    runs-on: ubuntu-22.04
-    steps:
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Build image (linux/arm64)
-      uses: docker/build-push-action@v3
-      with:
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-        platforms: linux/arm64
-
-  docker-ppc64le:
-    name: Docker Build ppc64le
-    runs-on: ubuntu-22.04
-    steps:
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Build image (linux/ppc64le)
-      uses: docker/build-push-action@v3
-      with:
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-        platforms: linux/ppc64le
-
-  docker-s390x:
-    name: Docker Build s390x
-    runs-on: ubuntu-20.04
-    steps:
-
-    - uses: actions/checkout@v3
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Docker Build (linux/s390x)
-      env:
-       DOCKER_BUILDKIT: 1
-      run: docker build --platform=linux/s390x .
+        path: web/cypress/videos
 
   mysql:
     name: E2E MySQL Test
     runs-on: ubuntu-20.04
     steps:
 
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v3
+
     - name: Set up Python 3.9
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: 3.9
 
@@ -380,9 +300,11 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
 
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.6
-      uses: actions/setup-python@v1
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
       with:
         python-version: 3.9
 
