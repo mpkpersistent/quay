@@ -73,11 +73,11 @@ jobs:
               uname -m
               apt-get -y update;
               apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils;
-              apt-get -y install libffi-dev libssl-dev libjpeg-dev git;
-              git clone ${{ github.server_url }}/${{ github.repository }} build;
+              apt-get -y install libffi-dev libssl-dev libjpeg-dev git
+              git clone ${{ github.server_url }}/${{ github.repository }} build
               cd build
-              cat requirements-dev.txt | grep tox | xargs pip install;
-              tox -e py39-unit;
+              cat requirements-dev.txt | grep tox | xargs pip install
+              tox -e py39-unit
             fi
 
     - name: Set up Python 3.9
@@ -114,11 +114,14 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig
+        sudo apt-get install libgpgme-dev libldap2-dev libsasl2-dev swig git
 
     - name: Check requirements.txt
       run: |
+        pip install --upgrade pip
         pip install wheel  # allow pip to use wheel instead of legacy 'setup.py install'
+        git clone ${{ github.server_url }}/${{ github.repository }} build
+        cd build
         ./hack/verify-requirements.sh
 
     - name: Install dependencies
