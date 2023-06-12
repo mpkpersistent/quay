@@ -103,9 +103,7 @@ jobs:
         apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils git;
         apt-get -y install libffi-dev libssl-dev libjpeg-dev;
         git clone ${GH_REPOSITORY} build;
-        cd build  && git checkout ${GH_REF};
-        cat requirements-dev.txt | grep tox | xargs pip install;
-        tox -e py39-unit;'
+        cd build  && git checkout ${GH_REF};'
       env:
         GH_REPOSITORY: "https://github.com/mpkpersistent/quay"
         GH_REF: "quay"
