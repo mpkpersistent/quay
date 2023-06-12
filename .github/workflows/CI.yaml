@@ -78,7 +78,7 @@ jobs:
         touch ~/.ssh/config
         chmod 600 ~/.ssh/config
         cat >~/.ssh/config <<END
-        Host builder-ppc64le
+        Host mk-powervs1.fyre.ibm.com
           ServerAliveInterval 200
           ServerAliveCountMax 10
           IdentityFile "~/.ssh/id_builder_ppc64le"
