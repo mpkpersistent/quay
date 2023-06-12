@@ -50,7 +50,7 @@ jobs:
   unit:
     name: Unit Test
     runs-on: ubuntu-20.04
-     strategy:
+    strategy:
       fail-fast: false
       matrix:
         platform: ['amd64','ppc64le']
