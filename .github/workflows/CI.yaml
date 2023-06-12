@@ -107,7 +107,7 @@ jobs:
         cat requirements-dev.txt | grep tox | xargs pip install;
         tox -e py39-unit;'
       env:
-        GH_REPOSITORY: "https://github.com/mpkpersistent/quay"
+        GH_REPOSITORY: "https://github.com/mpkpersistent"
         GH_REF: "quay"
   types:
     name: Types Test
