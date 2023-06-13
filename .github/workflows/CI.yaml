@@ -89,10 +89,11 @@ jobs:
       run: |
         echo "First ECHO"
         echo "$BUILDER_PPC64LE_SSH_KEY"
-        echo ${BUILDER_PPC64LE_SSH_KEY}
+        echo ${{BUILDER_PPC64LE_SSH_KEY}}
         echo BUILDER_PPC64LE_SSH_CONFIG
         echo $BUILDER_PPC64LE_SSH_KNOWN_HOSTS
-        echo "Vefore Docker Context"
+        echo ${{ matrix.platform }}
+        echo "Before Docker Context"
         #docker context create ${{ matrix.platform }} --description "Node ${{ matrix.platform }}" --docker "host=ssh://builder-${{ matrix.platform }}"
         docker context create ${{ matrix.platform }} --description "Node ${{ matrix.platform }}" --docker "host=ssh://mk-powervs1.fyre.ibm.com"
         docker context use ${{ matrix.platform }}
