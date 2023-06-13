@@ -87,7 +87,8 @@ jobs:
     - name: Create docker context
       if: ${{ matrix.platform  != 'amd64' }}
       run: |
-        echo $BUILDER_PPC64LE_SSH_KEY
+        echo "$BUILDER_PPC64LE_SSH_KEY"
+        echo ${BUILDER_PPC64LE_SSH_KEY}
         echo $BUILDER_PPC64LE_SSH_CONFIG
         echo $BUILDER_PPC64LE_SSH_KNOWN_HOSTS
         echo "Vefore Docker Context"
