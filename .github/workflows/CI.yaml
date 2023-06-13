@@ -90,7 +90,7 @@ jobs:
         echo "First ECHO"
         echo $BUILDER_PPC64LE_SSH_CONFIG
         echo ${{secrets.BUILDER_PPC64LE_SSH_CONFIG}}
-        echo ${ BUILDER_PPC64LE_SSH_CONFIG }
+        echo ${ BUILDER_PPC64LE_SSH_KNWON_HOSTS }
         echo $BUILDER_PPC64LE_SSH_KNOWN_HOSTS
         echo ${{ matrix.platform }}
         echo "Before Docker Context"
