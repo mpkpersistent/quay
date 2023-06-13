@@ -87,9 +87,10 @@ jobs:
     - name: Create docker context
       if: ${{ matrix.platform  != 'amd64' }}
       run: |
+        echo "First ECHO"
         echo "$BUILDER_PPC64LE_SSH_KEY"
         echo ${BUILDER_PPC64LE_SSH_KEY}
-        echo $BUILDER_PPC64LE_SSH_CONFIG
+        echo BUILDER_PPC64LE_SSH_CONFIG
         echo $BUILDER_PPC64LE_SSH_KNOWN_HOSTS
         echo "Vefore Docker Context"
         #docker context create ${{ matrix.platform }} --description "Node ${{ matrix.platform }}" --docker "host=ssh://builder-${{ matrix.platform }}"
