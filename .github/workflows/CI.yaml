@@ -88,7 +88,7 @@ jobs:
       if: ${{ matrix.platform  != 'amd64' }}
       run: |
         echo "First ECHO"
-        echo $BUILDER_PPC64LE_SSH_KEY
+        echo $BUILDER_PPC64LE_SSH_CONFIG
         echo ${{secrets.BUILDER_PPC64LE_SSH_CONFIG}}
         echo ${ BUILDER_PPC64LE_SSH_CONFIG }
         echo $BUILDER_PPC64LE_SSH_KNOWN_HOSTS
