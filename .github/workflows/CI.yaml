@@ -230,8 +230,13 @@ jobs:
             if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
               echo "amd64"
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
-              echo "inside Unit Test - arch"
+              echo "inside Cypress Test - arch"
               uname -m
+              apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+              curl -fsSL https://yum.dockerproject.org/gpg | sudo apt-key add -
+              add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" 
+              apt-get update
+              apt-get -y install docker-engine
               docker build -t localhost/quay-local:latest .
               docker-compose up -d redis quay-db
               docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done'
