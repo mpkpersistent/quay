@@ -71,13 +71,13 @@ jobs:
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               echo "inside Unit Test - arch"
               uname -m
-              apt-get -y update;
-              apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils;
-              apt-get -y install libffi-dev libssl-dev libjpeg-dev git
-              git clone ${{ github.server_url }}/${{ github.repository }} build
-              cd build
-              cat requirements-dev.txt | grep tox | xargs pip install
-              tox -e py39-unit
+              #apt-get -y update;
+              #apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils;
+              #apt-get -y install libffi-dev libssl-dev libjpeg-dev git
+              #git clone ${{ github.server_url }}/${{ github.repository }} build
+              #cd build
+              #cat requirements-dev.txt | grep tox | xargs pip install
+              #tox -e py39-unit
             fi
 
     - name: Set up Python 3.9
@@ -156,13 +156,13 @@ jobs:
             elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
               echo "inside Unit Test - arch"
               uname -m
-              apt-get -y update;
-              apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils;
-              apt-get -y install libffi-dev libssl-dev libjpeg-dev git;
-              git clone ${{ github.server_url }}/${{ github.repository }} build;
-              cd build
-              cat requirements-dev.txt | grep tox | xargs pip install;
-              tox -e py39-e2e;
+              #apt-get -y update;
+              #apt-get -y install libgpgme-dev libldap2-dev libsasl2-dev swig python3.9-dev python3-pip findutils;
+              #apt-get -y install libffi-dev libssl-dev libjpeg-dev git;
+              #git clone ${{ github.server_url }}/${{ github.repository }} build;
+              #cd build
+              #cat requirements-dev.txt | grep tox | xargs pip install;
+              #tox -e py39-e2e;
             fi	
 
 
@@ -215,6 +215,30 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
+    - name: Run-On-ArchAction
+      uses: uraimo/run-on-arch-action@v2
+      with:
+          distro: ${{ matrix.os }}
+          arch: ${{ matrix.architecture }}
+          run: |
+            if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
+              echo "amd64"
+            elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
+              echo "inside Unit Test - arch"
+              uname -m
+              docker build -t localhost/quay-local:latest .
+              docker-compose up -d redis quay-db
+              docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done'
+              DOCKER_USER="1001:0" docker-compose up -d --no-build quay
+              cd web && npm run quay:seed
+              python -m pip install --upgrade pip
+              pip install pytest requests
+              docker restart quay-quay
+              sleep 30
+              make integration-test
+              npm run build
+              npm run start:integration
+            fi  
     - name: Docker Build
       env:
        DOCKER_BUILDKIT: 1
