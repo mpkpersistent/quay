@@ -239,7 +239,7 @@ jobs:
               apt-key fingerprint 0EBFCD88
               #add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
               add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y
-              #add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main"
+              add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main"
               apt-get update
               apt-get -y install docker-engine
               docker build -t localhost/quay-local:latest .
