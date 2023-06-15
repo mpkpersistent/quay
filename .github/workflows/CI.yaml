@@ -240,8 +240,9 @@ jobs:
               #add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
               add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y
               add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" -y
+              add-apt-repository ppa:deadsnakes/ppa -y
               apt-get update
-              apt-get -y install docker-ce docker-compose npm
+              apt-get -y install docker-ce docker-compose npm python3.9
               docker build -t localhost/quay-local:latest .
               docker-compose up -d redis quay-db
               docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done'
