@@ -249,7 +249,7 @@ jobs:
               DOCKER_USER="1001:0" docker-compose up -d --no-build quay
               echo "Going for npm and python"
               cd web && npm run quay:seed
-              python3 -m pip3 install --upgrade pip
+              pip3 install --upgrade pip
               pip3 install pytest requests
               docker restart quay-quay
               sleep 30
