@@ -239,9 +239,9 @@ jobs:
               apt-key fingerprint 0EBFCD88
               #add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
               add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y
-              add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main"
+              add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" -y
               apt-get update
-              apt-get -y install docker-engine
+              apt-get -y install docker-ce docker-compose
               docker build -t localhost/quay-local:latest .
               docker-compose up -d redis quay-db
               docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done'
