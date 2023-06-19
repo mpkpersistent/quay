@@ -254,8 +254,6 @@ jobs:
               docker restart quay-quay
               sleep 30
               echo "cat Makefile"
-              cat Makefile
-              grep ^integration Makefile
               make integration-test
               npm run build
               npm run start:integration
