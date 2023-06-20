@@ -257,6 +257,7 @@ jobs:
               docker ps | grep quay 
               echo "docker logs"
               docker logs quay-quay
+              ls -l 
               make integration-test
               npm run build
               npm run start:integration
