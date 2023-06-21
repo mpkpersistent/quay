@@ -258,7 +258,7 @@ jobs:
               docker ps | grep quay 
               echo "docker logs"
               #cd quay
-              docker run quay-quay make integration-test
+              docker exec quay-quay make integration-test
               echo "make IT-test done"
               docker run quay-quay npm run build
               echo "npm run build done"
