@@ -234,7 +234,7 @@ jobs:
               uname -m
               uname -a
               apt-get -y update;
-              apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+              apt-get install -y apt-transport-https ca-certificates curl software-properties-common git
               curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
               apt-key fingerprint 0EBFCD88
               #add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -252,12 +252,12 @@ jobs:
               pip3 install --upgrade pip
               pip3 install pytest requests
               docker restart quay-quay
+              git clone https://github.com/quay/quay.git
               sleep 200
               echo "cat Makefile"
               docker ps | grep quay 
               echo "docker logs"
-              docker logs quay-quay
-              ls -l 
+              cd quay
               make integration-test
               npm run build
               npm run start:integration
