@@ -258,7 +258,11 @@ jobs:
               docker ps | grep quay 
               echo "docker logs"
               #cd quay
-              docker exec quay-quay make integration-test
+              #docker exec quay-quay make integration-test
+              docker run --rm
+              -w /
+              quay-quay
+              /bin/bash -c 'make integration-test'
               echo "make IT-test done"
               docker run quay-quay npm run build
               echo "npm run build done"
