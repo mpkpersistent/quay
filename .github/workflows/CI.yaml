@@ -238,9 +238,9 @@ jobs:
               curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
               apt-key fingerprint 0EBFCD88
               
-              #add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y
+              add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y
               add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" -y
-              #add-apt-repository ppa:deadsnakes/ppa -y
+              add-apt-repository ppa:deadsnakes/ppa -y
               apt-get update
               apt-get -y install docker-ce docker-compose npm python3.9 python3-pip
               docker build -t localhost/quay-local:latest .
