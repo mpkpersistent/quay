@@ -249,14 +249,13 @@ jobs:
               DOCKER_USER="1001:0" docker-compose up -d --no-build quay
               echo "Going for npm and python"
               cd web && npm run quay:seed
-              pip3 install --upgrade pip
-              pip3 install pytest requests
+              docker exec -t quay-quay bash -c 'add-apt-repository ppa:deadsnakes/ppa -y;apt-get -y install npm python3.9 python3-pip;pip3 install --upgrade pip;pip3 install pytest requests'
+              #pip3 install pytest requests
               docker restart quay-quay
               #git clone https://github.com/quay/quay.git
               sleep 200
               echo "cat Makefile"
-              docker ps | grep quay 
-              echo "docker logs"
+              docker ps | grep quay
               #cd quay
               #docker exec quay-quay make integration-test
               docker exec -t quay-quay bash -c 'make integration-test'
