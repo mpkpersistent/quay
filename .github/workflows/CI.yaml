@@ -248,8 +248,8 @@ jobs:
               docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done'
               DOCKER_USER="1001:0" docker-compose up -d --no-build quay
               echo "Going for npm and python"
-              #docker exec -t quay-quay bash -c 'uname -a;apt -y update;apt -y install software-properties-common;apt -y update;add-apt-repository ppa:deadsnakes/ppa -y;apt install -y npm python3.9 python3-pip;pip3 install --upgrade pip;pip3 install pytest requests'
-              DOCKER_USER="1001:0" docker exec -t quay-quay bash -c 'whoami;pip --version;pip3 --version;ls -lrt /app/lib/python3.9/site-pack*; pip3 install --upgrade pip;echo "before pytest"; pip3 install --user pytest requests' 
+              #docker exec -t -u root quay-quay bash -c 'uname -a;apt -y update;apt -y install software-properties-common;apt -y update;add-apt-repository ppa:deadsnakes/ppa -y;apt install -y npm python3.9 python3-pip;pip3 install --upgrade pip;pip3 install pytest requests'
+              DOCKER_USER="1001:0" docker exec -t -u root quay-quay bash -c 'whoami;pip --version;pip3 --version;ls -lrt /app/lib/python3.9/site-pack*; pip3 install --upgrade pip;echo "before pytest"; pip3 install --user pytest requests' 
               #git clone https://github.com/quay/quay.git
               #cd web && npm run quay:seed
               #docker exec -t quay-quay bash -c 'add-apt-repository ppa:deadsnakes/ppa -y;apt-get -y install npm python3.9 python3-pip;pip3 install --upgrade pip;pip3 install pytest requests'
