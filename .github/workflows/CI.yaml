@@ -249,21 +249,23 @@ jobs:
               docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done'
               DOCKER_USER="1001:0" docker-compose up -d --no-build quay
               echo "Going for npm and python"
-              docker exec -t -u root quay-quay bash -c 'uname -m;echo $PATH;ls -lr /usr/bin;apt-get -y update;apt -y install software-properties-common;apt -y update;add-apt-repository ppa:deadsnakes/ppa -y;apt install -y npm python3.9 python3-pip;pip install --upgrade pip;hash -r;pip install pytest requests;apt install -y  make'
+              docker exec -t -u root quay-quay bash -c 'uname -m;echo $PATH;ls -lr /usr/bin;pip install --upgrade pip;hash -r;pip install pytest requests;'
               #docker exec -t -u root quay-quay bash -c 'pip --version;pip3 --version;ls /usr/bin;pip3 install --upgrade pip;hash -r;echo "before pytest"; pip3 install pytest requests' 
-              #git clone https://github.com/quay/quay.git
+              git clone https://github.com/quay/quay.git
               #docker exec -t -u root quay-quay bash -c 'git clone https://github.com/quay/quay.git;cd quay/web && npm run quay:seed'
-              #cd web && npm run quay:seed
+              cd web && npm run quay:seed
               #docker exec -t quay-quay bash -c 'add-apt-repository ppa:deadsnakes/ppa -y;apt-get -y install npm python3.9 python3-pip;pip3 install --upgrade pip;pip3 install pytest requests'
               #pip3 install pytest requests
               docker restart quay-quay
               #git clone https://github.com/quay/quay.git
-              sleep 100
+              sleep 50
               echo "cat Makefile"
               docker ps | grep quay
+              ls -l |  make integration-test
               #cd quay
               #docker exec quay-quay make integration-test
-              docker exec -t -u root quay-quay bash -c 'hash -r;make integration-test'
+              #docker exec -t -u root quay-quay bash -c 'hash -r;make integration-test'
+             
               echo "make IT-test done"
               docker run quay-quay npm run build
               echo "npm run build done"
