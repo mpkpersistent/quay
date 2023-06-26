@@ -261,7 +261,7 @@ jobs:
               sleep 50
               echo "cat Makefile"
               docker ps | grep quay
-              cd .. |  make integration-test
+              cd .. &&  make integration-test
               #cd quay
               #docker exec quay-quay make integration-test
               #docker exec -t -u root quay-quay bash -c 'hash -r;make integration-test'
