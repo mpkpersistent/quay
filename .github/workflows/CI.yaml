@@ -255,7 +255,7 @@ jobs:
               #docker exec -t -u root quay-quay bash -c 'git clone https://github.com/quay/quay.git;cd quay/web && npm run quay:seed'
               cd web && npm run quay:seed
               #docker exec -t quay-quay bash -c 'add-apt-repository ppa:deadsnakes/ppa -y;apt-get -y install npm python3.9 python3-pip;pip3 install --upgrade pip;pip3 install pytest requests'
-              python -m pip install --upgrade pip
+              #python -m pip install --upgrade pip
               pip3 install pytest requests
               docker restart quay-quay
               #git clone https://github.com/quay/quay.git
