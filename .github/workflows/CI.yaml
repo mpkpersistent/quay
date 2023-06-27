@@ -243,7 +243,7 @@ jobs:
               add-apt-repository ppa:deadsnakes/ppa -y
               apt-get update
               apt-get -y install docker-ce docker-compose npm
-              apt-get -y install  python3.9 python3-pip    
+              apt-get -y install  python3.9 python3-pip apt-transport-https  
               docker build -t localhost/quay-local:latest .
               docker-compose up -d redis quay-db
               docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done'
