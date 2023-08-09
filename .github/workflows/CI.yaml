@@ -283,7 +283,7 @@ jobs:
               docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done'
               DOCKER_USER="1001:0" docker-compose up -d --no-build quay
               echo "Going for npm and python"
-              source ~/.profile
+              #source ~/.profile
               pyenv global 3.9.17       
               docker exec -t -u root quay-quay bash -c 'uname -m;echo $PATH;ls -lr /usr/bin;pip install --upgrade pip;hash -r;pip install pytest requests;'
               #docker exec -t -u root quay-quay bash -c 'pip --version;pip3 --version;ls /usr/bin;pip3 install --upgrade pip;hash -r; pip3 install pytest requests' 
