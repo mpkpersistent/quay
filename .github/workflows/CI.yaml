@@ -234,16 +234,27 @@ jobs:
           --mount type=bind,source="$(pwd)"/Makefile,target=/Makefile,readonly
           python:3.9
           /bin/bash -c '
+          echo "Inside Cypress Tests";
           apt-get update;
           apt-get install -y libgpgme-dev libldap2-dev libsasl2-dev swig git;
           pip install --upgrade pip;
           pip install wheel;
           git clone ${{ github.server_url }}/${{ github.repository }} build;
           cd build;
-          ./hack/verify-requirements.sh;
-          pip install -r ./requirements-dev.txt;
-          cd ../;
-          make types-test;'
+          echo "Inside build";
+          docker build -t localhost/quay-local:latest .;
+          docker-compose up -d redis quay-db;
+          docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done';
+          DOCKER_USER="1001:0" docker-compose up -d --no-build quay;
+          echo "Going for npm and python";
+          git clone https://github.com/quay/quay.git
+          cd web && npm run quay:seed
+          pip install pytest requests;
+          docker restart quay-quay;
+          sleep 50;
+          echo "cat Makefile";
+          docker ps | grep quay;
+          make integration-test;'
     - name: Cypress run
       uses: cypress-io/github-action@v5
       with:
