@@ -223,16 +223,27 @@ jobs:
       
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
-      with:
-      distro: ${{ matrix.os }}
-      arch: ${{ matrix.architecture }}
-      run: |
-        if [[ "${{ matrix.architecture }}" == "amd64" ]]; then
-          echo "amd64"
-        elif [[ "${{ matrix.architecture }}" == "ppc64le" ]]; then
-          echo "inside Cypress Test - arch"   
-	      fi
-
+    - name: Install dependencies and check types on ${{ matrix.architecture }} 
+      run: >-
+          docker run 
+          --rm
+          -w /
+          --platform ${{ matrix.architecture }}
+          --mount type=bind,source="$(pwd)"/requirements-dev.txt,target=/requirements-dev.txt,readonly
+          --mount type=bind,source="$(pwd)"/requirements.txt,target=/requirements.txt,readonly
+          --mount type=bind,source="$(pwd)"/Makefile,target=/Makefile,readonly
+          python:3.9
+          /bin/bash -c '
+          apt-get update;
+          apt-get install -y libgpgme-dev libldap2-dev libsasl2-dev swig git;
+          pip install --upgrade pip;
+          pip install wheel;
+          git clone ${{ github.server_url }}/${{ github.repository }} build;
+          cd build;
+          ./hack/verify-requirements.sh;
+          pip install -r ./requirements-dev.txt;
+          cd ../;
+          make types-test;'
     - name: Cypress run
       uses: cypress-io/github-action@v5
       with:
