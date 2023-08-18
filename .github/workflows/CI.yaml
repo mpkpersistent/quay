@@ -244,10 +244,10 @@ jobs:
           apt-get remove docker docker-engine docker.io containerd runc;
           apt install apt-transport-https ca-certificates curl software-properties-common -y;
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -;
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/docker-archive-keyring.gpg;
           add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
-          apt-key fingerprint 0EBFCD88;
-          apt-cache policy docker-ce;
-          apt install docker-ce -y;
+          apt-get -y update;
+          apt-get install docker-ce -y;
           add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y;
           add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" -y;
           apt-get -y install docker-ce docker-compose npm apt-transport-https;
