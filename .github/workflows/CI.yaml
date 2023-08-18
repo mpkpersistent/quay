@@ -235,6 +235,7 @@ jobs:
           python:3.9
           /bin/bash -c '
           echo "Inside Cypress Tests";
+          uname -m;
           apt-get -y update;
           apt-get install -y libgpgme-dev libldap2-dev libsasl2-dev swig git;
           apt-get install -y ca-certificates curl software-properties-common;
@@ -243,7 +244,7 @@ jobs:
           add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y;
           add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" -y;
           apt-get -y install docker-ce docker-compose npm apt-transport-https;  
-          chmod +x /usr/local/bin/docker-compose;
+          #chmod +x /usr/local/bin/docker-compose;
           pip install --upgrade pip;
           pip install wheel;
           
