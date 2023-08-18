@@ -235,14 +235,18 @@ jobs:
           python:3.9
           /bin/bash -c '
           echo "Inside Cypress Tests";
-          apt-get update;
+          apt-get -y update;
           apt-get install -y libgpgme-dev libldap2-dev libsasl2-dev swig git;
-          apt-get install -y apt-transport;
-          apt-get install -y docker.io;
-          curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose;
+          apt-get install -y ca-certificates curl software-properties-common git
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+          apt-key fingerprint 0EBFCD88
+          add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y
+          add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" -y
+          apt-get -y install docker-ce docker-compose npm apt-transport-https  
           chmod +x /usr/local/bin/docker-compose;
           pip install --upgrade pip;
           pip install wheel;
+          
           git clone ${{ github.server_url }}/${{ github.repository }} build;
           cd build;
           echo "Inside build";
