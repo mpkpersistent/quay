@@ -250,8 +250,7 @@ jobs:
           apt install docker-ce -y;
           add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y;
           add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" -y;
-          #apt-get -y install docker-ce docker-compose npm apt-transport-https;  
-          #chmod +x /usr/local/bin/docker-compose;
+          apt-get -y install docker-ce docker-compose npm apt-transport-https;
           pip install --upgrade pip;
           pip install wheel;
           apt-get -y install npm apt-transport-https;
