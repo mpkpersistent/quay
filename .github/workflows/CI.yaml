@@ -244,7 +244,6 @@ jobs:
           echo "Inside build";
           docker build -t localhost/quay-local:latest .;
           docker-compose up -d redis quay-db;
-          docker exec -t quay-db bash -c 'while ! pg_isready; do echo "waiting for postgres"; sleep 2; done';
           DOCKER_USER="1001:0" docker-compose up -d --no-build quay;
           echo "Going for npm and python";
           git clone https://github.com/quay/quay.git
