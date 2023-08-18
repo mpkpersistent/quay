@@ -235,7 +235,7 @@ jobs:
           python:3.9
           /bin/bash -c '
           echo "Inside Cypress Tests";
-          uname -m;
+          uname -a;
           apt-get -y update;
           apt-get install -y libgpgme-dev libldap2-dev libsasl2-dev swig git;
           apt-get install -y ca-certificates curl software-properties-common;
