@@ -198,9 +198,9 @@ jobs:
         chown -R 1001:root *.*; \
         ls -lrt; \
         docker build -t localhost/quay-local:latest .; \
-        docker-compose up -d redis quay-db; \
-        sleep 100; \
-        DOCKER_USER="1001:0" docker-compose up -d --no-build quay; \
+        docker compose up -d redis quay-db; \
+        sleep 60; \
+        DOCKER_USER="1001:0" docker compose up -d --no-build quay; \
         docker logs quay-quay; \
         echo "Going for npm and python"; \
         cd web && npm run quay:seed; \
