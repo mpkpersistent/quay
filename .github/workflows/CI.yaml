@@ -193,13 +193,14 @@ jobs:
         python3.9 --version; \
         apt-get install -y libgpgme-dev libldap2-dev libsasl2-dev; \
         export DOCKER_BUILDKIT=1; \
-        ls -lrt; \
+        
         chown -R 1001:root quay-entrypoint.sh; \
         chown -R 1001:root *.*; \
+        ls -lrt; \
         docker build -t localhost/quay-local:latest .; \
-        docker compose up -d redis quay-db; \
+        docker-compose up -d redis quay-db; \
         sleep 100; \
-        DOCKER_USER="1001:0" docker compose up -d --no-build quay; \
+        DOCKER_USER="1001:0" docker-compose up -d --no-build quay; \
         docker logs quay-quay; \
         echo "Going for npm and python"; \
         cd web && npm run quay:seed; \
