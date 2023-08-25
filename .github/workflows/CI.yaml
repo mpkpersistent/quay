@@ -195,6 +195,7 @@ jobs:
         export DOCKER_BUILDKIT=1; \
         ls -lrt; \
         chown -R 1001:root quay-entrypoint.sh; \
+        chown -R 1001:root *.*; \
         docker build -t localhost/quay-local:latest .; \
         docker compose up -d redis quay-db; \
         sleep 100; \
