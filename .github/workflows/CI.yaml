@@ -245,14 +245,14 @@ jobs:
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -;
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/docker-archive-keyring.gpg;
           add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
-          apt-get -y update;
-          apt-get install docker-ce docker.io docker-engine -y;
+          
+          
           add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y;
           add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" -y;
-          apt-get -y install docker-ce docker-compose npm apt-transport-https;
+          apt-get -y install docker-ce docker-compose docker-engine npm apt-transport-https;
           pip install --upgrade pip;
           pip install wheel;
-          apt-get -y install npm apt-transport-https;
+          
           git clone ${{ github.server_url }}/${{ github.repository }} build;
           cd build;
           echo "Inside build";
