@@ -247,8 +247,7 @@ jobs:
           add-apt-repository "deb [arch=ppc64le] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
           add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y;
           add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" -y;
-          
-          pip install --upgrade pip;
+          apt-get -y install docker docker-engine docker-ce docker-compose npm apt-transport-https;
           pip install wheel;
           
           git clone ${{ github.server_url }}/${{ github.repository }} build;
