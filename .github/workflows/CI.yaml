@@ -244,12 +244,10 @@ jobs:
           apt install apt-transport-https ca-certificates curl software-properties-common -y;
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -;
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/trusted.gpg.d/docker-archive-keyring.gpg;
-          add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
-          
-          
+          add-apt-repository "deb [arch=ppc64le] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable";
           add-apt-repository "deb https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" -y;
           add-apt-repository  "deb https://apt.dockerproject.org/repo/ ubuntu-$(lsb_release -cs) main" -y;
-          apt-get -y install docker-ce docker-compose docker-engine npm apt-transport-https;
+          
           pip install --upgrade pip;
           pip install wheel;
           
