@@ -232,7 +232,7 @@ jobs:
           --mount type=bind,source="$(pwd)"/requirements-dev.txt,target=/requirements-dev.txt,readonly
           --mount type=bind,source="$(pwd)"/requirements.txt,target=/requirements.txt,readonly
           --mount type=bind,source="$(pwd)"/Makefile,target=/Makefile,readonly
-          "quay.io/raja0940/types-test:latest" \
+          "quay.io/raja0940/types-test:latest"
           /bin/bash -ec '
           echo "Inside Cypress Tests";
           uname -a;
