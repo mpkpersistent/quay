@@ -240,7 +240,6 @@ jobs:
           apt-get install -y libgpgme-dev libldap2-dev libsasl2-dev swig git;
           apt-get install -y ca-certificates curl software-properties-common;
           curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose;
-          #chmod +x /usr/local/bin/docker-compose;
           apt-get remove docker docker-engine docker.io containerd runc;
           apt install apt-transport-https ca-certificates curl software-properties-common -y;
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -;
